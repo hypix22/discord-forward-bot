@@ -14,11 +14,14 @@ const TARGET_CHANNEL_ID = process.env.TARGET_CHANNEL_ID;
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
   if (message.channel.id !== SOURCE_CHANNEL_ID) return;
+  if (!message.content) return;
 
   const target = await client.channels.fetch(TARGET_CHANNEL_ID);
   if (!target) return;
 
-  target.send(`📩 **${message.author.username}:**\n${message.content}`);
+  // 🔒 Skickar ENDAST meddelandet (ingen användare)
+  target.send(message.content);
 });
 
 client.login(process.env.TOKEN);
+
